@@ -6,40 +6,84 @@ class Products with ChangeNotifier {
   List<Product> _items = [
     Product(
       id: 'p1',
-      title: 'Red Shirt',
-      description: 'A red shirt - it is pretty red!',
-      price: 29.99,
+      title: 'AMD Ryzen 7 3800X',
+      description: 'Best processor ever!',
+      price: 380.85,
       imageUrl:
-          'https://cdn.pixabay.com/photo/2016/10/02/22/17/red-t-shirt-1710578_1280.jpg',
+          'https://www.infor-ingen.com/tienda/image/cache/catalog/Logos%20Marcas/proces/7-3-500x500.jpg',
     ),
     Product(
       id: 'p2',
-      title: 'Trousers',
-      description: 'A nice pair of trousers.',
-      price: 59.99,
+      title: 'X570 Gaming Pro Carbon WiFi MPG',
+      description: 'MSI motherboard next gen.',
+      price: 248.40,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/e/e8/Trousers%2C_dress_%28AM_1960.022-8%29.jpg/512px-Trousers%2C_dress_%28AM_1960.022-8%29.jpg',
+          'https://static-geektopia.com/storage/t/i/656/65698/150x150/product_10_20190527133016.png',
     ),
     Product(
       id: 'p3',
-      title: 'Yellow Scarf',
-      description: 'Warm and cozy - exactly what you need for the winter.',
+      title: 'GeForce RTX 2080 Ti',
+      description: 'Nvidia so far best graphic card.',
       price: 19.99,
       imageUrl:
-          'https://live.staticflickr.com/4043/4438260868_cc79b3369d_z.jpg',
+          'https://static-geektopia.com/storage/t/i/577/57768/150x150/geforce-rtx-2080-ti-web-t.png',
     ),
     Product(
       id: 'p4',
-      title: 'A Pan',
-      description: 'Prepare any meal you want.',
-      price: 49.99,
+      title: 'Predator RGB, 16 GB (2x 8 GB), DDR4-2933, CL 15',
+      description: 'Last gen RAM best memories',
+      price: 119.99,
       imageUrl:
-          'https://upload.wikimedia.org/wikipedia/commons/thumb/1/14/Cast-Iron-Pan.jpg/1024px-Cast-Iron-Pan.jpg',
+          'https://static-geektopia.com/storage/t/i/605/60552/150x150/e98f7bbb592fc9f9a0f66bf95.jpg',
+    ),
+    Product(
+      id: 'p5',
+      title: 'Samsung 970 EVO Plus, 250 GB',
+      description: 'Best SSD for highest performance',
+      price: 87.10,
+      imageUrl:
+          'https://static-geektopia.com/storage/t/i/641/64110/196x196/97a40436c091dd2cad2857646.jpg',
+    ),
+    Product(
+      id: 'p6',
+      title: 'Corsair HX1000i',
+      description: 'Power! Power! and more Power with Corsair',
+      price: 227.90,
+      imageUrl:
+          'https://static-geektopia.com/storage/t/i/342/34291/196x196/f158c9d79909fcfe94d82f641.jpg',
+    ),
+    Product(
+      id: 'p7',
+      title: 'Thermaltake View 71 TG RGB',
+      description: 'Beautiful cases for you pc!',
+      price: 227.90,
+      imageUrl:
+          'https://static-geektopia.com/storage/t/i/466/46691/196x196/ca-1i7-00f1wn-01_2dc7122b.jpg',
+    ),
+    Product(
+      id: 'p8',
+      title: 'Corsair H150i Pro',
+      description: 'Cool, Cooler, Coolest ',
+      price: 186.99,
+      imageUrl:
+          'https://static-geektopia.com/storage/t/i/576/57614/196x196/43c28887a1757b494ef892644.jpg',
+    ),
+    Product(
+      id: 'p9',
+      title: 'Western Digital WD Black, 2 TB',
+      description: 'out of space? No more with WD ',
+      price: 186.99,
+      imageUrl:
+          'https://static-geektopia.com/storage/t/i/489/48944/196x196/a3396f05296a9e10e1713af01.jpg',
     ),
   ];
 
   List<Product> get items {
     return [..._items];
+  }
+
+  List<Product> get favoriteItems {
+    return _items.where((product) => product.isFavorite).toList();
   }
 
   Product findById(String id) {
