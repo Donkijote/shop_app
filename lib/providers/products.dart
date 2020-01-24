@@ -24,7 +24,7 @@ class Products with ChangeNotifier {
       id: 'p3',
       title: 'GeForce RTX 2080 Ti',
       description: 'Nvidia so far best graphic card.',
-      price: 19.99,
+      price: 1109.99,
       imageUrl:
           'https://static-geektopia.com/storage/t/i/577/57768/150x150/geforce-rtx-2080-ti-web-t.png',
     ),
