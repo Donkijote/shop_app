@@ -4,7 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart.dart';
 import '../widgets/product_grid.dart';
 import '../widgets/badge.dart';
-import 'cart.dart';
+import './cart.dart';
 
 enum FilterOptions { Favorites, All }
 
