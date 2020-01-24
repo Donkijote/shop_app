@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
+import '../screens/product_ne.dart';
 import '../widgets/user_product_item.dart';
 import '../widgets/drawer.dart';
 
@@ -18,7 +19,9 @@ class UserProductsScreen extends StatelessWidget {
             icon: const Icon(
               Icons.add,
             ),
-            onPressed: () {},
+            onPressed: () {
+              Navigator.of(context).pushNamed(ProductNEScreen.routeName);
+            },
           ),
         ],
       ),
