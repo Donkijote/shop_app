@@ -111,4 +111,9 @@ class Products with ChangeNotifier {
       notifyListeners();
     }
   }
+
+  void deleteProduct(String id) {
+    _items.removeWhere((p) => p.id == id);
+    notifyListeners();
+  }
 }
