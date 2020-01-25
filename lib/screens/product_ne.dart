@@ -41,12 +41,24 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
   void _updateImageUrl() {
     if (!_imageFocusNode.hasFocus) {
       if (_imageUrlController.text.isNotEmpty) {
-        setState(() {});
+        if ((!_imageUrlController.text.startsWith('http') ||
+                !_imageUrlController.text.startsWith('https')) &&
+            (!_imageUrlController.text.endsWith('.png') ||
+                !_imageUrlController.text.endsWith('.jpg') ||
+                !_imageUrlController.text.endsWith('.jpeg'))) {
+          return;
+        }
       }
+      setState(() {});
     }
   }
 
   void _onSubmit() {
+    final isValid = _form.currentState.validate();
+
+    if (!isValid) {
+      return;
+    }
     _form.currentState.save();
   }
 
@@ -80,6 +92,12 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
                 },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Field cannot be empty';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                       title: value,
@@ -99,6 +117,18 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_desFocusNode);
                 },
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Field cannot be empty';
+                  }
+                  if (double.tryParse(value) == null) {
+                    return 'Please enter a valid number';
+                  }
+                  if (double.parse(value) <= 0) {
+                    return 'Price must be greater than 0';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                       title: _editedProduct.title,
@@ -115,6 +145,15 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
                 focusNode: _desFocusNode,
+                validator: (value) {
+                  if (value.isEmpty) {
+                    return 'Field cannot be empty';
+                  }
+                  if (value.length < 10) {
+                    return 'Should be at least 10 characters';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _editedProduct = Product(
                       title: _editedProduct.title,
@@ -155,6 +194,21 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                       controller: _imageUrlController,
                       focusNode: _imageFocusNode,
                       onFieldSubmitted: (_) => _onSubmit(),
+                      validator: (value) {
+                        if (value.isEmpty) {
+                          return 'Field cannot be empty';
+                        }
+                        if (!value.startsWith('http') ||
+                            !value.startsWith('https')) {
+                          return 'Please enter a valid URL';
+                        }
+                        if (!value.endsWith('.png') ||
+                            !value.endsWith('.jpg') ||
+                            !value.endsWith('.jpeg')) {
+                          return 'Please enter a valid URL';
+                        }
+                        return null;
+                      },
                       onSaved: (value) {
                         _editedProduct = Product(
                             title: _editedProduct.title,
