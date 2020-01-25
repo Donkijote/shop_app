@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import '../screens/product_ne.dart';
 import '../models/product.dart';
 
 class UserProductItem extends StatelessWidget {
@@ -24,7 +25,10 @@ class UserProductItem extends StatelessWidget {
               icon: Icon(
                 Icons.edit,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Navigator.of(context).pushNamed(ProductNEScreen.routeName,
+                    arguments: product.id);
+              },
               color: Colors.amber,
             ),
             IconButton(
