@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../models/product.dart';
+
 class ProductNEScreen extends StatefulWidget {
   static const routeName = '/edit-product';
   @override
@@ -11,6 +13,14 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
   final _desFocusNode = FocusNode();
   final _imageFocusNode = FocusNode();
   final _imageUrlController = TextEditingController();
+  final _form = GlobalKey<FormState>();
+  var _editedProduct = Product(
+    id: null,
+    title: '',
+    price: 0.0,
+    description: '',
+    imageUrl: '',
+  );
 
   @override
   void initState() {
@@ -36,6 +46,10 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
     }
   }
 
+  void _onSubmit() {
+    _form.currentState.save();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -43,10 +57,19 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
         title: Text(
           'Edit product',
         ),
+        actions: <Widget>[
+          IconButton(
+            icon: Icon(
+              Icons.save,
+            ),
+            onPressed: _onSubmit,
+          ),
+        ],
       ),
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Form(
+          key: _form,
           child: ListView(
             children: <Widget>[
               TextFormField(
@@ -56,6 +79,14 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                 textInputAction: TextInputAction.next,
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_priceFocusNode);
+                },
+                onSaved: (value) {
+                  _editedProduct = Product(
+                      title: value,
+                      price: _editedProduct.price,
+                      description: _editedProduct.description,
+                      imageUrl: _editedProduct.imageUrl,
+                      id: null);
                 },
               ),
               TextFormField(
@@ -68,6 +99,14 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                 onFieldSubmitted: (_) {
                   FocusScope.of(context).requestFocus(_desFocusNode);
                 },
+                onSaved: (value) {
+                  _editedProduct = Product(
+                      title: _editedProduct.title,
+                      price: double.parse(value),
+                      description: _editedProduct.description,
+                      imageUrl: _editedProduct.imageUrl,
+                      id: null);
+                },
               ),
               TextFormField(
                 decoration: InputDecoration(
@@ -76,6 +115,14 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                 maxLines: 3,
                 keyboardType: TextInputType.multiline,
                 focusNode: _desFocusNode,
+                onSaved: (value) {
+                  _editedProduct = Product(
+                      title: _editedProduct.title,
+                      price: _editedProduct.price,
+                      description: value,
+                      imageUrl: _editedProduct.imageUrl,
+                      id: null);
+                },
               ),
               Row(
                 crossAxisAlignment: CrossAxisAlignment.end,
@@ -107,6 +154,15 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                       textInputAction: TextInputAction.done,
                       controller: _imageUrlController,
                       focusNode: _imageFocusNode,
+                      onFieldSubmitted: (_) => _onSubmit(),
+                      onSaved: (value) {
+                        _editedProduct = Product(
+                            title: _editedProduct.title,
+                            price: _editedProduct.price,
+                            description: _editedProduct.description,
+                            imageUrl: value,
+                            id: null);
+                      },
                     ),
                   ),
                 ],
