@@ -72,10 +72,10 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
   void _updateImageUrl() {
     if (!_imageFocusNode.hasFocus) {
       if (_imageUrlController.text.isNotEmpty) {
-        if ((!_imageUrlController.text.startsWith('http') ||
-                !_imageUrlController.text.startsWith('https')) &&
-            (!_imageUrlController.text.endsWith('.png') ||
-                !_imageUrlController.text.endsWith('.jpg') ||
+        if ((!_imageUrlController.text.startsWith('http') &&
+                !_imageUrlController.text.startsWith('https')) ||
+            (!_imageUrlController.text.endsWith('.png') &&
+                !_imageUrlController.text.endsWith('.jpg') &&
                 !_imageUrlController.text.endsWith('.jpeg'))) {
           return;
         }
@@ -286,11 +286,11 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
                                   !value.startsWith('https')) {
                                 return 'Please enter a valid URL';
                               }
-                              if (!value.endsWith('.png') ||
+                              /*if (!value.endsWith('.png') ||
                                   !value.endsWith('.jpg') ||
                                   !value.endsWith('.jpeg')) {
-                                return 'Please enter a valid URL';
-                              }
+                                return 'Please enter a valid URL format';
+                              }*/
                               return null;
                             },
                             onSaved: (value) {
