@@ -7,9 +7,11 @@ import '../models/product.dart';
 
 class UserProductItem extends StatelessWidget {
   final Product product;
+
   UserProductItem(this.product);
   @override
   Widget build(BuildContext context) {
+    final scaffold = Scaffold.of(context);
     return ListTile(
       title: Text(
         product.title,
@@ -37,9 +39,18 @@ class UserProductItem extends StatelessWidget {
               icon: Icon(
                 Icons.delete,
               ),
-              onPressed: () {
-                Provider.of<Products>(context, listen: false)
-                    .deleteProduct(product.id);
+              onPressed: () async {
+                try {
+                  await Provider.of<Products>(context, listen: false)
+                      .deleteProduct(product.id);
+                } catch (e) {
+                  scaffold.showSnackBar(SnackBar(
+                    content: Text(
+                      'Deleting failed',
+                      textAlign: TextAlign.center,
+                    ),
+                  ));
+                }
               },
               color: Theme.of(context).errorColor,
             ),
