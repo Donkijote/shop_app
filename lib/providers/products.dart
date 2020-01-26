@@ -97,7 +97,21 @@ class Products with ChangeNotifier {
     const url = 'https://shopstore-64cc5.firebaseio.com/products.json';
     try {
       final response = await http.get(url);
-      final decoded = json.decode(response.body);
+      final decodedData = json.decode(response.body) as Map<String, dynamic>;
+      // final List<Product> loadedProducts = [];
+      decodedData.forEach((prodId, prodData) {
+        _items.add(
+          Product(
+            id: prodId,
+            title: prodData['title'],
+            description: prodData['description'],
+            price: prodData['price'],
+            imageUrl: prodData['imageUrl'],
+            isFavorite: prodData['isFavorite'],
+          ),
+        );
+      });
+      notifyListeners();
     } catch (e) {
       throw e;
     }
