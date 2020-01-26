@@ -7,7 +7,7 @@ import '../models/product.dart';
 
 class Products with ChangeNotifier {
   List<Product> _items = [
-    Product(
+    /*Product(
       id: 'p1',
       title: 'AMD Ryzen 7 3800X',
       description: 'Best processor ever!',
@@ -66,7 +66,7 @@ class Products with ChangeNotifier {
     Product(
       id: 'p8',
       title: 'Corsair H150i Pro',
-      description: 'Cool, Cooler, Coolest ',
+      description: 'Cool, Cooler, Coolest.',
       price: 186.99,
       imageUrl:
           'https://static-geektopia.com/storage/t/i/576/57614/196x196/43c28887a1757b494ef892644.jpg',
@@ -74,11 +74,11 @@ class Products with ChangeNotifier {
     Product(
       id: 'p9',
       title: 'Western Digital WD Black, 2 TB',
-      description: 'out of space? No more with WD ',
+      description: 'out of space? No more with WD.',
       price: 186.99,
       imageUrl:
           'https://static-geektopia.com/storage/t/i/489/48944/196x196/a3396f05296a9e10e1713af01.jpg',
-    ),
+    ),*/
   ];
 
   List<Product> get items {
@@ -98,9 +98,10 @@ class Products with ChangeNotifier {
     try {
       final response = await http.get(url);
       final decodedData = json.decode(response.body) as Map<String, dynamic>;
-      // final List<Product> loadedProducts = [];
+      final List<Product> loadedProducts = [];
       decodedData.forEach((prodId, prodData) {
-        _items.add(
+        loadedProducts.insert(
+          0,
           Product(
             id: prodId,
             title: prodData['title'],
@@ -111,6 +112,8 @@ class Products with ChangeNotifier {
           ),
         );
       });
+
+      _items = loadedProducts;
       notifyListeners();
     } catch (e) {
       throw e;
