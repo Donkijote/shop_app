@@ -84,7 +84,7 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
     }
   }
 
-  void _onSubmit() {
+  Future<void> _onSubmit() async {
     final isValid = _form.currentState.validate();
 
     if (!isValid) {
@@ -99,10 +99,11 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
           .updateProduct(_editedProduct.id, _editedProduct);
       Navigator.of(context).pop();
     } else {
-      Provider.of<Products>(context, listen: false)
-          .addProduct(_editedProduct)
-          .catchError((error) {
-        return showDialog(
+      try {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_editedProduct);
+      } catch (error) {
+        await showDialog(
           context: context,
           builder: (ctx) => AlertDialog(
             title: Text(
@@ -123,12 +124,12 @@ class _ProductNEScreenState extends State<ProductNEScreen> {
             ],
           ),
         );
-      }).then((_) {
+      } finally {
         setState(() {
           _isLoading = false;
         });
         Navigator.of(context).pop();
-      });
+      }
     }
   }
 
