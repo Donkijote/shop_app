@@ -20,17 +20,23 @@ class _ProductsScreenState extends State<ProductsScreen> {
   var _init = true;
   var _isLoading = false;
 
+  Future<void> _refreshProducts(BuildContext context) async {
+    setState(() {
+      _isLoading = true;
+    });
+    await Provider.of<Products>(context, listen: false)
+        .fetchAndSetProducts()
+        .then((_) {
+      setState(() {
+        _isLoading = false;
+      });
+    });
+  }
+
   @override
   void didChangeDependencies() {
     if (_init) {
-      setState(() {
-        _isLoading = true;
-      });
-      Provider.of<Products>(context).fetchAndSetProducts().then((_) {
-        setState(() {
-          _isLoading = false;
-        });
-      });
+      _refreshProducts(context);
     }
     _init = false;
     super.didChangeDependencies();
@@ -83,11 +89,14 @@ class _ProductsScreenState extends State<ProductsScreen> {
         ],
       ),
       drawer: AppDrawer(),
-      body: _isLoading
-          ? Center(
-              child: CircularProgressIndicator(),
-            )
-          : ProductsGrid(_showOnlyFavorites),
+      body: RefreshIndicator(
+        onRefresh: () => _refreshProducts(context),
+        child: _isLoading
+            ? Center(
+                child: CircularProgressIndicator(),
+              )
+            : ProductsGrid(_showOnlyFavorites),
+      ),
     );
     return scaffold;
   }
