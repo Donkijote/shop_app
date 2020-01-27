@@ -11,6 +11,7 @@ import './cart.dart';
 enum FilterOptions { Favorites, All }
 
 class ProductsScreen extends StatefulWidget {
+  static const routeName = '/products';
   @override
   _ProductsScreenState createState() => _ProductsScreenState();
 }
