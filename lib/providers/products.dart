@@ -82,6 +82,10 @@ class Products with ChangeNotifier {
     ),*/
   ];
 
+  final String token;
+
+  Products(this.token, this._items);
+
   List<Product> get items {
     return [..._items];
   }
@@ -95,7 +99,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> fetchAndSetProducts() async {
-    const url = 'https://shopstore-64cc5.firebaseio.com/products.json';
+    final url =
+        'https://shopstore-64cc5.firebaseio.com/products.json?auth=$token';
     try {
       final response = await http.get(url);
       final decodedData = json.decode(response.body) as Map<String, dynamic>;
