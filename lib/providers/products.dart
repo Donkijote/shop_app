@@ -83,8 +83,9 @@ class Products with ChangeNotifier {
   ];
 
   final String token;
+  final String userId;
 
-  Products(this.token, this._items);
+  Products(this.token, this._items, this.userId);
 
   List<Product> get items {
     return [..._items];
@@ -107,6 +108,9 @@ class Products with ChangeNotifier {
       if (decodedData == null) {
         return;
       }
+      final favoriteResp = await http.get(
+          'https://shopstore-64cc5.firebaseio.com/userFavorites/$userId.json?auth=$token');
+      final decodedFavorite = json.decode(favoriteResp.body);
       final List<Product> loadedProducts = [];
       decodedData.forEach((prodId, prodData) {
         loadedProducts.insert(
@@ -117,7 +121,9 @@ class Products with ChangeNotifier {
             description: prodData['description'],
             price: prodData['price'],
             imageUrl: prodData['imageUrl'],
-            isFavorite: prodData['isFavorite'],
+            isFavorite: decodedFavorite == null
+                ? false
+                : decodedFavorite[prodId] ?? false,
           ),
         );
       });
@@ -140,7 +146,6 @@ class Products with ChangeNotifier {
           'price': product.price,
           'imageUrl': product.imageUrl,
           'description': product.description,
-          'isFavorite': product.isFavorite,
         }),
       );
 
