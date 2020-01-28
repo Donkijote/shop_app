@@ -95,4 +95,11 @@ class Auth with ChangeNotifier {
     );*/
     _auth(email, password, 'signInWithPassword');
   }
+
+  void logout() {
+    _token = null;
+    _userId = null;
+    _expiryDate = null;
+    notifyListeners();
+  }
 }
