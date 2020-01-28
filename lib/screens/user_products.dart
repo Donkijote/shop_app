@@ -9,12 +9,13 @@ import '../widgets/drawer.dart';
 class UserProductsScreen extends StatelessWidget {
   static const routeName = '/user-products';
   Future<void> _refreshProducts(BuildContext context) async {
-    await Provider.of<Products>(context, listen: false).fetchAndSetProducts();
+    await Provider.of<Products>(context, listen: false)
+        .fetchAndSetProducts(true);
   }
 
   @override
   Widget build(BuildContext context) {
-    var products = Provider.of<Products>(context);
+    // var products = Provider.of<Products>(context);
     return Scaffold(
       appBar: AppBar(
         title: const Text('Your products'),
@@ -30,22 +31,32 @@ class UserProductsScreen extends StatelessWidget {
         ],
       ),
       drawer: AppDrawer(),
-      body: RefreshIndicator(
-        onRefresh: () => _refreshProducts(context),
-        child: Padding(
-          padding: const EdgeInsets.all(8),
-          child: ListView.builder(
-            itemCount: products.items.length,
-            itemBuilder: (ctx, i) => Column(
-              children: <Widget>[
-                UserProductItem(products.items[i]),
-                Divider(
-                  color: Theme.of(context).accentColor,
-                )
-              ],
-            ),
-          ),
-        ),
+      body: FutureBuilder(
+        future: _refreshProducts(context),
+        builder: (ctx, snapshot) =>
+            snapshot.connectionState == ConnectionState.waiting
+                ? Center(
+                    child: CircularProgressIndicator(),
+                  )
+                : RefreshIndicator(
+                    onRefresh: () => _refreshProducts(context),
+                    child: Consumer<Products>(
+                      builder: (ct, products, _) => Padding(
+                        padding: const EdgeInsets.all(8),
+                        child: ListView.builder(
+                          itemCount: products.items.length,
+                          itemBuilder: (ctx, i) => Column(
+                            children: <Widget>[
+                              UserProductItem(products.items[i]),
+                              Divider(
+                                color: Theme.of(context).accentColor,
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ),
       ),
     );
   }

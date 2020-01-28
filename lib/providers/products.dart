@@ -99,9 +99,11 @@ class Products with ChangeNotifier {
     return _items.firstWhere((p) => p.id == id);
   }
 
-  Future<void> fetchAndSetProducts() async {
+  Future<void> fetchAndSetProducts([bool filterByUser = false]) async {
+    final filterString =
+        filterByUser ? 'orderBy="creatorId"&equalTo="$userId"' : '';
     final url =
-        'https://shopstore-64cc5.firebaseio.com/products.json?auth=$token';
+        'https://shopstore-64cc5.firebaseio.com/products.json?auth=$token&$filterString';
     try {
       final response = await http.get(url);
       final decodedData = json.decode(response.body) as Map<String, dynamic>;
