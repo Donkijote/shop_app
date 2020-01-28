@@ -46,7 +46,17 @@ class MyApp extends StatelessWidget {
             accentColor: Colors.deepPurple,
             fontFamily: 'Lato',
           ),
-          home: auth.isAuth ? ProductsScreen() : AuthScreen(),
+          home: auth.isAuth
+              ? ProductsScreen()
+              : FutureBuilder(
+                  future: auth.tryAutoLoging(),
+                  builder: (ctx, authResult) =>
+                      authResult.connectionState == ConnectionState.waiting
+                          ? Center(
+                              child: CircularProgressIndicator(),
+                            )
+                          : AuthScreen(),
+                ),
           routes: {
             ProductDetailScreen.nameRoute: (ctx) => ProductDetailScreen(),
             CartScreen.routeName: (ctx) => CartScreen(),
